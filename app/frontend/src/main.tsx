@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css'
-import App from './App.tsx'
+import App from './App.js'
 import Results from './Results.tsx'
 
 
@@ -22,7 +22,7 @@ function Index() {
   if (showResults) {
     return(
       <>
-      <Results/>
+      <Results setShowApp={setShowApp} setShowResults={setShowResults}/>
       </>
     )
   };
