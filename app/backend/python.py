@@ -1,4 +1,4 @@
-'''from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from nba_api.stats.endpoints import playercareerstats
 from nba_api.stats.static import players
@@ -57,7 +57,7 @@ def process_data():
 
     one_mpg = float(round(df_one.iloc[0]['MIN'] / gp_one, 2))  # Minutes Per Game
     two_mpg = float(round(df_two.iloc[0]['MIN'] / gp_two, 2))
-'''
+
     #Comparing which player has higher
     # ppg = 0
     # rpg = 0
@@ -131,28 +131,28 @@ def process_data():
     # print(f'{player_spg} has the higher steals per game with: {spg}')
     # print(f'{player_mpg} has the higher minutes per game with: {mpg}')
     # print(f'{player_gp} has the higher games played with: {gp}')
-'''
+
     return jsonify({'Player One': playerone,
                     'PPG1': one_ppg,
-                    'APG': one_apg,
-                    'RPG': one_rpg,
+                    'APG1': one_apg,
+                    'RPG1': one_rpg,
                     'FG1': 50,
                     'SPG1': one_spg,
                     'BPG1': one_bpg,
                     'MP1': one_mpg,
                     'GP1': gp_one}, 
                    {"Player Two": playertwo,                    
-                    'PPG1': two_ppg,
-                    'APG': two_apg,
-                    'RPG': two_rpg,
-                    'FG1': 50,
-                    'SPG1': two_spg,
-                    'BPG1': two_bpg,
-                    'MP1': two_mpg,
-                    'GP1': gp_two,
+                    'PPG2': two_ppg,
+                    'APG2': two_apg,
+                    'RPG2': two_rpg,
+                    'FG2': 50,
+                    'SPG2': two_spg,
+                    'BPG2': two_bpg,
+                    'MP2': two_mpg,
+                    'GP2': gp_two,
                    })
 
 if __name__ == '__main__':
     app.run(debug=True)
-'''
+
 

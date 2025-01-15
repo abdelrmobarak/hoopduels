@@ -14,6 +14,7 @@ export default {
       'deepblue': '#0070FF',
       'limegreen': '#29FF00',
       'stone': '#7E7E7E',
+      'red': '#FF0000'
     },
     extend: {},
   },

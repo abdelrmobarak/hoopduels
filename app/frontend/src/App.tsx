@@ -2,8 +2,11 @@ import './index.css'
 import basketball from './assets/basketball.png'
 
 interface AppProps {
-  setShowApp: (show: boolean) => void;
-  setShowResults: (show: boolean) => void;
+  setShowApp: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowResults: React.Dispatch<React.SetStateAction<boolean>>;
+  setPlayerOne: React.Dispatch<React.SetStateAction<string>>;
+  setPlayerTwo: React.Dispatch<React.SetStateAction<string>>;
+  setDataSet: any;
 }
 
 interface DataToSend {
@@ -16,40 +19,40 @@ interface ResponseData {
   received: string;
 }
 
-function App({ setShowApp, setShowResults }: AppProps) {
 
-  const playerOne: string = 'LeBron James';
-  const playerTwo: string = 'Stephen Curry';
-  const dataToSend: DataToSend = {variable: playerOne, secondvariable: playerTwo};
-
-  //Sending data and fetching data from Python File
-  fetch('http://127.0.0.1:5000/process_data', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(dataToSend),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      return response.json();  
-    })
-    .then((data: ResponseData) => {
-      console.log(data);
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
+function App({ setShowApp, setShowResults, setPlayerOne, setPlayerTwo, setDataSet }: AppProps) {
 
   function resultsClick() {
     setShowApp(false);
     setShowResults(true);
-    const first = (document.getElementById('inputone') as HTMLInputElement).value
-    const second = (document.getElementById('inputtwo') as HTMLInputElement).value
-    console.log(first)
-    console.log(second)
+    const first: string = ((document.getElementById('inputone') as HTMLInputElement).value);
+    const second: string = ((document.getElementById('inputtwo') as HTMLInputElement).value);
+    const playerOne: string = first;
+    const playerTwo: string = second;
+    const dataToSend: DataToSend = {variable: playerOne, secondvariable: playerTwo};
+    setPlayerOne(first);
+    setPlayerTwo(second);
+
+
+    fetch('http://127.0.0.1:5000/process_data', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dataToSend),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();  
+      })
+      .then((data: ResponseData) => {
+        setDataSet(data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
   }
 
   return (

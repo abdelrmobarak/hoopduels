@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css'
-import App from './App.js'
+import App from './App.tsx'
 import Results from './Results.tsx'
 
 
@@ -10,11 +10,16 @@ const root = ReactDOM.createRoot(document.getElementById('root')!);
 function Index() {
   const [showApp, setShowApp] = useState(true);
   const [showResults, setShowResults] = useState(false);
-
+  const [playerOne, setPlayerOne] = useState('');
+  const [playerTwo, setPlayerTwo] = useState('');
+  const [dataSet, setDataSet] = useState([]);
+  
   if (showApp) {
     return(
       <>
-      <App setShowApp={setShowApp} setShowResults={setShowResults}/>
+      <App setShowApp={setShowApp} setShowResults={setShowResults} 
+      setPlayerOne={setPlayerOne} setPlayerTwo={setPlayerTwo}
+      setDataSet={setDataSet}/>
       </>
     )
   };
@@ -22,7 +27,9 @@ function Index() {
   if (showResults) {
     return(
       <>
-      <Results setShowApp={setShowApp} setShowResults={setShowResults}/>
+      <Results setShowApp={setShowApp} setShowResults={setShowResults} 
+      playerOne={playerOne} 
+      playerTwo={playerTwo} dataSet={dataSet}/>
       </>
     )
   };
