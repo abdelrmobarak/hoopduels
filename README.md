@@ -10,10 +10,8 @@ backend, the app retrieves player data using the NBA API.
 **Contains Basic Statistics:** Including points, rebounds, assists, steals, blocks, and more.
 
 # Demo
-<video width="640" height="360" controls>
-  <source src="https://github.com/abdelrmobarak/hoopduels/raw/main/app/example.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+
+https://github.com/user-attachments/assets/f62db977-526e-47a4-8c29-93915cafa45f
 
 # Technologies Used
 **Frontend:** TypeScript, React.js, Axios, Tailwind CSS<br>
