@@ -21,4 +21,6 @@ https://github.com/user-attachments/assets/f62db977-526e-47a4-8c29-93915cafa45f
 -Adding user authentication to save player comparisons<br>
 -Implement more advanced statistics
 
+Disclaimer: I am in no way affiliated with the NBA. The content of this website is not endorsed or sponsored by the NBA or its affiliates. All statistics and data are sourced from publicly available resources.
+
 **For more details or to contribute, feel free to open an issue or pull request!**
