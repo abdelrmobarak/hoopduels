@@ -36,6 +36,8 @@ function Results( { setShowApp, setShowResults, playerOne, playerTwo, dataSet }:
         const rpg2: number = dataSet[1]['RPG2'];
         const spg1: number = dataSet[0]['SPG1'];
         const spg2: number = dataSet[1]['SPG2'];
+        const yearone: string = dataSet[0]['SZN1'];
+        const yeartwo: string = dataSet[1]['SZN2'];
 
         useEffect(() => {
             const a1 = document.getElementById('points1')!;
@@ -151,57 +153,58 @@ function Results( { setShowApp, setShowResults, playerOne, playerTwo, dataSet }:
                 s2.classList.add('text-stone');
             }}, []);
 
-        return(
-            <div className='min-h-screen flex justify-center space-x-8 py-12 text-wrap'>
-                <div className='flex flex-col text-center text-6xl'>
-                    <div className='font-bold'>
-                        <h1 className='font-karantina'>{playerOne} in Year X</h1>
-                        <h1 className='font-karantina text-5xl text-stone'>2023-2024</h1>
-                        <div className='mt-20 text-5xl space-y-2'>
-                            <h1 id='points1' className=''>{ppg1}</h1>
-                            <h1 id='assists1' className=''>{apg1}</h1>
-                            <h1 id='rebounds1' className=''>{rpg1}</h1>
-                            <h1 id='fg1' className=''>{fg1}</h1>
-                            <h1 id='steals1' className=''>{spg1}</h1>
-                            <h1 id='blocks1' className=''>{bpg1}</h1>
-                            <h1 id='minutes1' className=''>{mp1}</h1>
-                            <h1 id='games1' className=''>{gp1}</h1>
+            return(
+                <div className='min-h-screen flex justify-center items-center space-x-8 py-12 flex-wrap'>
+                    <div className='flex flex-col text-center items-center mb-8 w-1/3'>
+                        <div className='font-bold'>
+                            <h1 className='font-karantina text-6xl'>{playerOne}</h1>
+                            <h1 className='font-karantina text-5xl text-stone'>{yearone}</h1>
+                            <div className='mt-4 text-5xl space-y-2'>
+                                <h1 id='points1'>{ppg1}</h1>
+                                <h1 id='assists1'>{apg1}</h1>
+                                <h1 id='rebounds1'>{rpg1}</h1>
+                                <h1 id='fg1'>{fg1}</h1>
+                                <h1 id='steals1'>{spg1}</h1>
+                                <h1 id='blocks1'>{bpg1}</h1>
+                                <h1 id='minutes1'>{mp1}</h1>
+                                <h1 id='games1'>{gp1}</h1>
+                            </div>
                         </div>
                     </div>
-                </div>
-        
-                <div className='flex flex-col text-center items-center'>
-                    <img draggable='false' onClick={onBackClick} className='w-32 h-32 hover:cursor-pointer' src={basketball}></img>
+            
+                    <div className='flex flex-col text-center items-center mb-8'>
+                        <img draggable='false' onClick={onBackClick} className='w-32 h-32 hover:cursor-pointer' src={basketball}></img>
                         <div className='text-2xl space-y-6 py-16 font-bold'>
-                        <h1>Points per Game</h1>
-                        <h1>Assists per Game</h1>
-                        <h1>Rebounds per Game</h1>
-                        <h1>Field Goal Percentage</h1>
-                        <h1>Steals per Game</h1>
-                        <h1>Blocks per Game</h1>
-                        <h1>Minutes Played</h1>
-                        <h1>Games Played</h1>
+                            <h1>Points per Game</h1>
+                            <h1>Assists per Game</h1>
+                            <h1>Rebounds per Game</h1>
+                            <h1>Field Goal Percentage</h1>
+                            <h1>Steals per Game</h1>
+                            <h1>Blocks per Game</h1>
+                            <h1>Minutes Played</h1>
+                            <h1>Games Played</h1>
+                        </div>
                     </div>
-                </div>
-        
-                <div className='flex flex-col text-center text-4xl'>
-                    <div className='font-bold text-6xl'>
-                        <h1 className='font-karantina'>{playerTwo} in Year X</h1>
-                        <h1 className='text-5xl text-stone font-karantina'>2023-2024</h1>
-                        <div className='mt-20 text-5xl space-y-2'>
-                            <h1 id='points2' className=''>{ppg2}</h1>
-                            <h1 id='assists2' className=''>{apg2}</h1>
-                            <h1 id='rebounds2' className=''>{rpg2}</h1>
-                            <h1 id='fg2' className=''>{fg2}</h1>
-                            <h1 id='steals2' className=''>{spg2}</h1>
-                            <h1 id='blocks2' className=''>{bpg2}</h1>
-                            <h1 id='minutes2' className=''>{mp2}</h1>
-                            <h1 id='games2' className=''>{gp2}</h1>
+            
+                    <div className='flex flex-col text-center items-center mb-8 w-1/3'>
+                        <div className='font-bold text-6xl'>
+                            <h1 className='font-karantina text-6xl'>{playerTwo}</h1>
+                            <h1 className='text-5xl text-stone font-karantina'>{yeartwo}</h1>
+                            <div className='mt-4 text-5xl space-y-2'>
+                                <h1 id='points2'>{ppg2}</h1>
+                                <h1 id='assists2'>{apg2}</h1>
+                                <h1 id='rebounds2'>{rpg2}</h1>
+                                <h1 id='fg2'>{fg2}</h1>
+                                <h1 id='steals2'>{spg2}</h1>
+                                <h1 id='blocks2'>{bpg2}</h1>
+                                <h1 id='minutes2'>{mp2}</h1>
+                                <h1 id='games2'>{gp2}</h1>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             );
+                   
     }
 }
 

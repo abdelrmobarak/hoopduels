@@ -3,6 +3,7 @@ from flask_cors import CORS
 from nba_api.stats.endpoints import playercareerstats
 from nba_api.stats.static import players
 import pandas as pd
+from datetime import datetime
 
 app = Flask(__name__)
 CORS(app)
@@ -14,6 +15,10 @@ def process_data():
     print(playerone)
     playertwo = data.get('secondvariable')
     print(playertwo)
+    yearone = int(data.get('yearvar'))
+    print(yearone)
+    yeartwo = int(data.get('secondyearvar'))
+    print(yeartwo)
 
     nba_players = players.get_players()
 
@@ -36,123 +41,109 @@ def process_data():
     career_two = playercareerstats.PlayerCareerStats(player_id=(id_number_two))
     df_two = (career_two.get_data_frames()[0])
 
+
+
+    #Checking if player was on two teams in a season, then dropping the extra rows
+    rows_to_drop_one = []
+    tot_row_two = df_one[df_one['TEAM_ABBREVIATION'] == 'TOT']
+    if not tot_row_two.empty:
+        index_one = tot_row_two.index[0]
+        rows_to_drop_one.extend([index_one - 1, index_one - 2])
+    else:
+        print("No rows found for TOT in df_one")
+
+    totwo_row = df_one[df_one['TEAM_ABBREVIATION'] == '2TM']
+    if not totwo_row.empty:
+        index_one_totwo = totwo_row.index[0]
+        rows_to_drop_one.extend([index_one_totwo - 1, index_one_totwo - 2])
+    else:
+        print("No rows found for 2TM in df_one")
+
+    if rows_to_drop_one:
+        df_one.drop(rows_to_drop_one, inplace=True, errors='ignore')
+
+    rows_to_drop_two = []
+    tot_row_two = df_two[df_two['TEAM_ABBREVIATION'] == 'TOT']
+    if not tot_row_two.empty:
+        index_two = tot_row_two.index[0]
+        rows_to_drop_two.extend([index_two - 1, index_two - 2])
+    else:
+        print("No rows found for TOT in df_two")
+
+    totwo_row_two = df_two[df_two['TEAM_ABBREVIATION'] == '2TM']
+    if not totwo_row_two.empty:
+        index_two_totwo = totwo_row_two.index[0]
+        rows_to_drop_two.extend([index_two_totwo - 1, index_two_totwo - 2])
+    else:
+        print("No rows found for 2TM in df_two")
+
+    if rows_to_drop_two:
+        df_two.drop(rows_to_drop_two, inplace=True, errors='ignore')
+
+    #Debugging checks
+    print(df_one)
+    print(df_two)
+
+
+
+
+    year = datetime.now().year
+    user_input_season_one = yearone
+    user_input_season_two = yeartwo
+
+    season_one = (year - user_input_season_one + 1) * -1
+    season_two = (year - user_input_season_two + 1) * -1
+    print(season_one)
+    print(season_two)
+
     #Creating Variables to Compare Basic Statistics
-    gp_one = int(df_one.iloc[0]['GP'])
-    gp_two = int(df_two.iloc[0]['GP'])
+    gp_one = int(df_one.iloc[season_one]['GP'])
+    gp_two = int(df_two.iloc[season_two]['GP'])
 
-    one_ppg = float(round(df_one.iloc[0]['PTS'] / gp_one, 2))  # Points per Game
-    two_ppg = float(round(df_two.iloc[0]['PTS'] / gp_two, 2))
+    one_ppg = float(round(df_one.iloc[season_one]['PTS'] / gp_one, 2))  # Points per Game
+    two_ppg = float(round(df_two.iloc[season_two]['PTS'] / gp_two, 2))
 
-    one_rpg = float(round(df_one.iloc[0]['REB'] / gp_one, 2))  # Rebounds per Game
-    two_rpg = float(round(df_two.iloc[0]['REB'] / gp_two, 2))
+    one_rpg = float(round(df_one.iloc[season_one]['REB'] / gp_one, 2))  # Rebounds per Game
+    two_rpg = float(round(df_two.iloc[season_two]['REB'] / gp_two, 2))
 
-    one_apg = float(round(df_one.iloc[0]['AST'] / gp_one, 2))  # Assists Per Game
-    two_apg = float(round(df_two.iloc[0]['AST'] / gp_two, 2))
+    one_apg = float(round(df_one.iloc[season_one]['AST'] / gp_one, 2))  # Assists Per Game
+    two_apg = float(round(df_two.iloc[season_two]['AST'] / gp_two, 2))
 
-    one_spg = float(round(df_one.iloc[0]['STL'] / gp_one, 2))  # Steals Per Game
-    two_spg = float(round(df_two.iloc[0]['STL'] / gp_two, 2))
+    one_spg = float(round(df_one.iloc[season_one]['STL'] / gp_one, 2))  # Steals Per Game
+    two_spg = float(round(df_two.iloc[season_two]['STL'] / gp_two, 2))
 
-    one_bpg = float(round(df_one.iloc[0]['BLK'] / gp_one, 2))  # Blocks Per Game
-    two_bpg = float(round(df_two.iloc[0]['BLK'] / gp_two, 2))
+    one_bpg = float(round(df_one.iloc[season_one]['BLK'] / gp_one, 2))  # Blocks Per Game
+    two_bpg = float(round(df_two.iloc[season_two]['BLK'] / gp_two, 2))
 
-    one_mpg = float(round(df_one.iloc[0]['MIN'] / gp_one, 2))  # Minutes Per Game
-    two_mpg = float(round(df_two.iloc[0]['MIN'] / gp_two, 2))
+    one_mpg = float(round(df_one.iloc[season_one]['MIN'] / gp_one, 2))  # Minutes Per Game
+    two_mpg = float(round(df_two.iloc[season_two]['MIN'] / gp_two, 2))
 
-    #Comparing which player has higher
-    # ppg = 0
-    # rpg = 0
-    # apg = 0
-    # bpg = 0
-    # spg = 0
-    # mpg = 0
-    # gp = 0
-    # player_ppg  = ''
-    # player_rpg = ''
-    # player_apg = ''
-    # player_bpg = ''
-    # player_spg = ''
-    # player_mpg = ''
-    # player_gp = ''
+    one_fg = float(round(df_one.iloc[season_one]['FG_PCT']*100,2)) #FG%
+    two_fg = float(round(df_two.iloc[season_two]['FG_PCT']*100,2))
 
-    # # Points per Game
-    # if one_ppg > two_ppg:
-    #     ppg += one_ppg
-    #     player_ppg = playerone
-    # elif one_ppg < two_ppg:
-    #     ppg += two_ppg
-    #     player_ppg = playertwo
-    # # Rebounds per Game
-    # if one_rpg > two_rpg:
-    #     rpg += one_rpg
-    #     player_rpg = playerone
-    # elif one_rpg < two_rpg:
-    #     rpg += two_rpg
-    #     player_rpg = playertwo
-    # # Assists per Game
-    # if one_apg > two_apg:
-    #     apg += one_apg
-    #     player_apg = playerone
-    # elif one_apg < two_apg:
-    #     apg += two_apg
-    #     player_apg = playertwo
-    # # Blocks per Game
-    # if one_bpg > two_bpg:
-    #     bpg += one_bpg
-    #     player_bpg = playerone
-    # elif one_bpg < two_bpg:
-    #     bpg += two_bpg
-    #     player_bpg = playertwo
-    # # Steals per Game
-    # if one_spg > two_spg:
-    #     spg += one_spg
-    #     player_spg = playerone
-    # elif one_spg < two_spg:
-    #     spg += two_spg
-    #     player_spg = playertwo
-    # # Minutes per Game
-    # if one_mpg > two_mpg:
-    #     mpg += one_mpg
-    #     player_mpg = playerone
-    # elif one_mpg < two_mpg:
-    #     mpg += two_mpg
-    #     player_mpg = playertwo
-    # # Games Played
-    # if gp_one > gp_two:
-    #     gp += gp_one
-    #     player_gp = playerone
-    # elif gp_one < gp_two:
-    #     gp += gp_two
-    #     player_gp = playertwo
-
-    # print(f'{player_ppg} has the higher points per game with: {ppg}')
-    # print(f'{player_rpg} has the higher rebounds per game with: {rpg}')
-    # print(f'{player_apg} has the higher assists per game with: {apg}')
-    # print(f'{player_bpg} has the higher blocks per game with: {bpg}')
-    # print(f'{player_spg} has the higher steals per game with: {spg}')
-    # print(f'{player_mpg} has the higher minutes per game with: {mpg}')
-    # print(f'{player_gp} has the higher games played with: {gp}')
+    one_szn = df_one.iloc[season_one]['SEASON_ID']
+    two_szn = df_two.iloc[season_two]['SEASON_ID']
 
     return jsonify({'Player One': playerone,
                     'PPG1': one_ppg,
                     'APG1': one_apg,
                     'RPG1': one_rpg,
-                    'FG1': 50,
+                    'FG1': one_fg,
                     'SPG1': one_spg,
                     'BPG1': one_bpg,
                     'MP1': one_mpg,
-                    'GP1': gp_one}, 
+                    'GP1': gp_one,
+                    'SZN1': one_szn}, 
                    {"Player Two": playertwo,                    
                     'PPG2': two_ppg,
                     'APG2': two_apg,
                     'RPG2': two_rpg,
-                    'FG2': 50,
+                    'FG2': two_fg,
                     'SPG2': two_spg,
                     'BPG2': two_bpg,
                     'MP2': two_mpg,
                     'GP2': gp_two,
-                   })
+                    'SZN2': two_szn})
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-

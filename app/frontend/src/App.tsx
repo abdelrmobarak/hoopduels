@@ -1,5 +1,6 @@
 import './index.css'
 import basketball from './assets/basketball.png'
+import face from './assets/face.png'
 
 interface AppProps {
   setShowApp: React.Dispatch<React.SetStateAction<boolean>>;
@@ -12,6 +13,8 @@ interface AppProps {
 interface DataToSend {
   variable: string;
   secondvariable: string;
+  yearvar: string;
+  secondyearvar: string;
 }
 
 interface ResponseData {
@@ -27,9 +30,16 @@ function App({ setShowApp, setShowResults, setPlayerOne, setPlayerTwo, setDataSe
     setShowResults(true);
     const first: string = ((document.getElementById('inputone') as HTMLInputElement).value);
     const second: string = ((document.getElementById('inputtwo') as HTMLInputElement).value);
+    const firstyear: string = ((document.getElementById('yearone') as HTMLInputElement).value);
+    const secondyear: string = ((document.getElementById('yeartwo') as HTMLInputElement).value);
+
     const playerOne: string = first;
     const playerTwo: string = second;
-    const dataToSend: DataToSend = {variable: playerOne, secondvariable: playerTwo};
+
+    const yearone: string = firstyear;
+    const yeartwo: string = secondyear;
+    
+    const dataToSend: DataToSend = {variable: playerOne, secondvariable: playerTwo, yearvar: yearone, secondyearvar: yeartwo };
     setPlayerOne(first);
     setPlayerTwo(second);
 
@@ -64,14 +74,20 @@ function App({ setShowApp, setShowResults, setPlayerOne, setPlayerTwo, setDataSe
         </h1>
       <div className='min-h-screen flex items-end py-24'>
       <div className='flex space-x-16 text-5xl font-bold'>
-          <div className='flex flex-col items-center space-y-8 font-karantina'>
-            <div className='w-64 h-64 bg-orange rounded-xl'></div>
+          <div className='flex flex-col items-center space-y-8 font-karantina '>
+            <div className='flex w-64 h-64 bg-orange rounded-xl items-center justify-center'>
+              <img src={face} className='w-48'></img>
+            </div>
             <input type='text' className='bg-grape text-stone text-center rounded-xl' id='inputone' placeholder='Enter Player One'></input>
+            <input type='text' className='bg-grape text-stone text-center rounded-xl' id='yearone' placeholder='Enter The Year'></input>
           </div>
-        <button className='bg-deepblue text-limegreen text-2xl w-32 h-32 rounded-2xl mt-16' onClick={resultsClick}>CLICK TO COMPARE</button>
+        <button className='bg-deepblue text-limegreen text-2xl w-32 h-32 rounded-2xl mt-36' onClick={resultsClick}>CLICK TO COMPARE</button>
         <div className='flex flex-col items-center space-y-8 font-karantina'>
-        <div className='w-64 h-64 bg-orange rounded-xl'></div>
+        <div className='flex justify-center items-center w-64 h-64 bg-orange rounded-xl'>
+          <img src={face} className='w-48'></img>
+        </div>
         <input type='text' className='bg-grape text-stone text-center rounded-xl' id='inputtwo' placeholder='Enter Player Two'></input>
+        <input type='text' className='bg-grape text-stone text-center rounded-xl' id='yeartwo' placeholder='Enter The Year'></input>
           </div>
       </div>
       </div>
