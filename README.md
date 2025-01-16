@@ -1,4 +1,5 @@
 # Hoop Duels
+**Hoop Duels is still a Work in Progress application, I am currently working on sizing the application based on your screen size**<br>
 
 Hoop Duels is a web application that allows users to compare statistics
 between NBA players. Built using TypeScript for the front end and Python Flask for the 
