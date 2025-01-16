@@ -18,7 +18,7 @@ https://github.com/user-attachments/assets/f62db977-526e-47a4-8c29-93915cafa45f
 **Backend:** Python Flask, NBA API
 
 # Future Enhancements
-**-Add functionality for mobile devices**
+**-Add functionality for mobile devices**<br>
 -Adding user authentication to save player comparisons<br>
 -Implement more advanced statistics
 
