@@ -9,6 +9,9 @@ backend, the app retrieves player data using the NBA API.
 **Interactive UI:** Allows users to view the statlines side by side, highlighting which player had higher statistics<br>
 **Contains Basic Statistics:** Including points, rebounds, assists, steals, blocks, and more.
 
+# Demo
+![Demo Video](https://github.com/abdelrmobarak/hoopduels/blob/main/app/example.mp4)
+
 # Technologies Used
 **Frontend:** TypeScript, React.js, Axios, Tailwind CSS<br>
 **Backend:** Python Flask, NBA API
