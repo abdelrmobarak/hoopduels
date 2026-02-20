@@ -1,14 +1,15 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from nba_api.stats.endpoints import playercareerstats
 from nba_api.stats.static import players
 import pandas as pd
 from datetime import datetime
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/process_data": {"origins": ["http://localhost:5173", "http://127.0.0.1:5173"]}})
 
-@app.route('/process_data', methods=['POST'])
+@app.route('/process_data', methods=['POST', 'OPTIONS'])
+@cross_origin(origins=["http://localhost:5173", "http://127.0.0.1:5173"])
 def process_data():
     data = request.get_json()
     playerone = data.get('variable')
@@ -84,45 +85,48 @@ def process_data():
     print(df_one)
     print(df_two)
 
-
-
-
     year = datetime.now().year
     user_input_season_one = yearone
     user_input_season_two = yeartwo
 
-    season_one = (year - user_input_season_one + 1) * -1
-    season_two = (year - user_input_season_two + 1) * -1
-    print(season_one)
-    print(season_two)
+    season_one = f'{user_input_season_one - 1}-{str(user_input_season_one)[-2:]}'
+    season_two = f'{user_input_season_two - 1}-{str(user_input_season_two)[-2:]}'
 
-    #Creating Variables to Compare Basic Statistics
-    gp_one = int(df_one.iloc[season_one]['GP'])
-    gp_two = int(df_two.iloc[season_two]['GP'])
+    season_one_row = df_one[df_one['SEASON_ID'] == season_one]
+    season_two_row = df_two[df_two['SEASON_ID'] == season_two]
 
-    one_ppg = float(round(df_one.iloc[season_one]['PTS'] / gp_one, 2))  # Points per Game
-    two_ppg = float(round(df_two.iloc[season_two]['PTS'] / gp_two, 2))
+    # Check if the rows are empty
+    if season_one_row.empty or season_two_row.empty:
+        return jsonify({'error': f'Season data not found for {season_one} or {season_two}.'})
 
-    one_rpg = float(round(df_one.iloc[season_one]['REB'] / gp_one, 2))  # Rebounds per Game
-    two_rpg = float(round(df_two.iloc[season_two]['REB'] / gp_two, 2))
+    # Get the values for the statistics
+    gp_one = int(season_one_row['GP'].values[0])
+    gp_two = int(season_two_row['GP'].values[0])
 
-    one_apg = float(round(df_one.iloc[season_one]['AST'] / gp_one, 2))  # Assists Per Game
-    two_apg = float(round(df_two.iloc[season_two]['AST'] / gp_two, 2))
+    one_ppg = float(round(season_one_row['PTS'].values[0] / gp_one, 2))
+    two_ppg = float(round(season_two_row['PTS'].values[0] / gp_two, 2))
 
-    one_spg = float(round(df_one.iloc[season_one]['STL'] / gp_one, 2))  # Steals Per Game
-    two_spg = float(round(df_two.iloc[season_two]['STL'] / gp_two, 2))
+    one_rpg = float(round(season_one_row['REB'].values[0] / gp_one, 2))
+    two_rpg = float(round(season_two_row['REB'].values[0] / gp_two, 2))
 
-    one_bpg = float(round(df_one.iloc[season_one]['BLK'] / gp_one, 2))  # Blocks Per Game
-    two_bpg = float(round(df_two.iloc[season_two]['BLK'] / gp_two, 2))
+    one_apg = float(round(season_one_row['AST'].values[0] / gp_one, 2))
+    two_apg = float(round(season_two_row['AST'].values[0] / gp_two, 2))
 
-    one_mpg = float(round(df_one.iloc[season_one]['MIN'] / gp_one, 2))  # Minutes Per Game
-    two_mpg = float(round(df_two.iloc[season_two]['MIN'] / gp_two, 2))
+    one_spg = float(round(season_one_row['STL'].values[0] / gp_one, 2))
+    two_spg = float(round(season_two_row['STL'].values[0] / gp_two, 2))
 
-    one_fg = float(round(df_one.iloc[season_one]['FG_PCT']*100,2)) #FG%
-    two_fg = float(round(df_two.iloc[season_two]['FG_PCT']*100,2))
+    one_bpg = float(round(season_one_row['BLK'].values[0] / gp_one, 2))
+    two_bpg = float(round(season_two_row['BLK'].values[0] / gp_two, 2))
 
-    one_szn = df_one.iloc[season_one]['SEASON_ID']
-    two_szn = df_two.iloc[season_two]['SEASON_ID']
+    one_mpg = float(round(season_one_row['MIN'].values[0] / gp_one, 2))
+    two_mpg = float(round(season_two_row['MIN'].values[0] / gp_two, 2))
+
+    one_fg = float(round(season_one_row['FG_PCT'].values[0] * 100, 2))
+    two_fg = float(round(season_two_row['FG_PCT'].values[0] * 100, 2))
+
+    one_szn = season_one_row['SEASON_ID'].values[0]
+    two_szn = season_two_row['SEASON_ID'].values[0]
+
 
     return jsonify({'Player One': playerone,
                     'PPG1': one_ppg,
